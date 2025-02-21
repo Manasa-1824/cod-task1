@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+
+        body { 
+        font-family: Arial, sans-serif; text-align: center; 
+        }
+        .quiz-container
+        { 
+         width: 50%; 
+         margin: auto; 
+         padding: 20px; 
+         border: 1px solid #ddd; 
+         border-radius: 10px; 
+        }
+        .question { 
+        font-size: 20px;
+        margin-bottom: 15px; 
+        }
+        .options { 
+        list-style: none; 
+        padding: 0; 
+        }
+        .options li { 
+        margin: 10px 0; 
+        cursor:pointer
+        }
+        .correct { 
+        color: green; 
+        font-weight: bold; 
+        }
+        .incorrect { 
+        color: red; 
+        font-weight: bold; 
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz App</h1>
+        <div id="quiz">
+            <p class="question" id="question"></p>
+            <ul class="options" id="options"></ul>
+            <p id="feedback"></p>
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            { question: "When was Codetech IT Solutions founded?", options: ["2015", "2018", "2023", "2024"], answer: "2023" },
+            { question: "What is the primary focus of Codetech IT Solutions?", options: ["Manufacturing", "IT services and consulting", "Agriculture", "Retail"], answer: "IT services and consulting" },
+            { question: "Where is Codetech IT Solutions headquartered", options: ["New York", "Hyderabad", "London", "(Not publicly available)"], answer: "(Not publicly available)" }
+        ];
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const feedbackElement = document.getElementById("feedback");
+            
+            questionElement.textContent = quizData[currentQuestionIndex].question;
+            optionsElement.innerHTML = "";
+            feedbackElement.textContent = "";
+            
+            quizData[currentQuestionIndex].options.forEach(option => {
+                const li = document.createElement("li");
+                li.textContent = option;
+                li.onclick = () => checkAnswer(option);
+                optionsElement.appendChild(li);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const feedbackElement = document.getElementById("feedback");
+            if (selectedOption === quizData[currentQuestionIndex].answer) {
+                feedbackElement.textContent = "Correct!";
+                feedbackElement.className = "correct";
+            } else {
+                feedbackElement.textContent = "Incorrect!";
+                feedbackElement.className = "incorrect";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                document.getElementById("quiz").innerHTML = "<h2>Quiz Completed!</h2>";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
